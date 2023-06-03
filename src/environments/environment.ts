@@ -3,8 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  API_URL: 'https://control-seguridad-api-production.up.railway.app'
+  production: 'false'
   // API_URL: 'http://localhost:3000'
 };
 

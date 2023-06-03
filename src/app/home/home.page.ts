@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AdMob, BannerAdOptions, BannerAdPosition, BannerAdSize } from "@capacitor-community/admob";
-import { isPlatform } from '@ionic/angular';
-
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -19,17 +18,18 @@ export class HomePage {
   calculated:boolean = false;
   ringtones =  ['puercoarana', 'spider1', 'spider2'];
   ringtoneEnabled = true;
+  testing:boolean = environment.production && environment.production == 'false' ? true : false;
 
   constructor() {
-
-    // this.splitDisplay();
+    console.log("Env ", environment)
+    console.log("Testing", this.testing);
     this.initialize();
-    // this.showBanner();
+    
   }
 
   async initialize(){
     const { status } = await AdMob.trackingAuthorizationStatus();
-    alert('Status ' + status)
+    // alert('Status ' + status)
     
     if(status === 'notDetermined'){
       console.log("Display info");
@@ -38,8 +38,10 @@ export class HomePage {
     AdMob.initialize({
       requestTrackingAuthorization: true,
       testingDevices: ['One Plus'],
-      initializeForTesting: true
+      initializeForTesting: this.testing
     });
+
+    await this.showBanner();
   }
 
   async showBanner() {
@@ -50,7 +52,7 @@ export class HomePage {
       adSize: BannerAdSize.ADAPTIVE_BANNER,
       position: BannerAdPosition.BOTTOM_CENTER,
       margin: 0,
-      isTesting: true
+      isTesting: this.testing
     };
 
     await AdMob.showBanner(option);
