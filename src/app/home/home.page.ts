@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { AdMob, BannerAdOptions, BannerAdPosition, BannerAdSize } from "@capacitor-community/admob";
+import { isPlatform } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-home',
@@ -11,13 +14,54 @@ export class HomePage {
   result:string = '';
   calculating:boolean = false;
   savedNumber:number = 0;
-  separators = ['\\\+', '-', '\\*', '/'];
+  separators = ['\\\+', '-', '\\*', '/', '%'];
   currentValue = 0;
   calculated:boolean = false;
+  ringtones =  ['puercoarana', 'spider1', 'spider2'];
+  ringtoneEnabled = true;
 
   constructor() {
 
     // this.splitDisplay();
+    this.initialize();
+    // this.showBanner();
+  }
+
+  async initialize(){
+    const { status } = await AdMob.trackingAuthorizationStatus();
+    alert('Status ' + status)
+    
+    if(status === 'notDetermined'){
+      console.log("Display info");
+    } 
+
+    AdMob.initialize({
+      requestTrackingAuthorization: true,
+      testingDevices: ['One Plus'],
+      initializeForTesting: true
+    });
+  }
+
+  async showBanner() {
+    // const adId = isPlatform('ios') ? 'ios-ad-id' : 'android-ad-unit';
+    const adId = 'android-ad-unit';
+    const option: BannerAdOptions = {
+      adId,
+      adSize: BannerAdSize.ADAPTIVE_BANNER,
+      position: BannerAdPosition.BOTTOM_CENTER,
+      margin: 0,
+      isTesting: true
+    };
+
+    await AdMob.showBanner(option);
+  }
+
+  playRingtone(){
+    let audioElement:any = document.getElementById("myAudio");
+    const position = Math.floor(Math.random() * 3);
+    const ringtone =  "../assets/mp3/"+ this.ringtones[position] + ".mp3";
+    audioElement.src = ringtone;
+    audioElement.play;    
   }
 
 
@@ -86,6 +130,13 @@ export class HomePage {
             counter++;
             data[counter] = "";
             break;
+          
+            case this.display[i] == "%":
+              this.makeCalculation(newOperator, parseFloat(data[counter]));
+              newOperator = '%';
+              counter++;
+              data[counter] = "";
+              break;
 
           default:
             data[counter] += this.display[i];
@@ -98,18 +149,14 @@ export class HomePage {
       }
       
 
-      console.log("DATA ", data);
-      console.log("RESULT ", result);
-
     }
 
   }
 
   makeCalculation(operator:string, value:number){
-    console.log("Operator ", operator);
     
+
     if(operator!==""){
-      console.log("NEW VALUE ", value);
       switch(operator){
         case '+':
           this.currentValue += value;
@@ -122,6 +169,10 @@ export class HomePage {
           case '*':
           this.currentValue *= value;
           break;
+
+          case '%':
+            this.currentValue += value * parseFloat("0."+value);
+            break;
 
           case '/':
           this.currentValue /= value;

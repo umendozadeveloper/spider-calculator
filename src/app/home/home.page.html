@@ -1,16 +1,19 @@
-<ion-header [translucent]="true">
+<!-- <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
       Spider Calculator
     </ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content [fullscreen]="true" style="margin: 0; height: 100%; overflow: hidden">
+  <ion-button (click)="showBanner()"></ion-button>
  <div class="calc-main">
   
+  
+
   <div class="calc-display">
-    <ion-input type="text" [(ngModel)]="display" class="ion-text-end"></ion-input>
+    <ion-input type="text" readOnly="true" [(ngModel)]="display" class="ion-text-end"></ion-input>
     <!-- <ion-label class="ion-text-end">{{display}}</ion-label> -->
     <div class="calc-mini-display" class="ion-text-end">
       {{result}}
@@ -18,12 +21,20 @@
   </div>
 
   <ion-grid>
+    <audio style="display: none;" controls autoplay muted id="myAudio">
+    
+    </audio>
     <ion-row>
       <ion-col>
-        <ion-button shape="round" color="light" (click)="click('c')" >C</ion-button>
+        <!-- <ion-button  shape="round" color="light" >
+          <ion-img class="web" src='../../assets/img/spiderweb.png' style=""></ion-img>
+        </ion-button> -->
+        <ion-button shape="round" color="light" (click)="playRingtone()">
+          <ion-icon class="web" name="backspace"></ion-icon>
+        </ion-button>
       </ion-col>
       <ion-col>
-        <ion-button shape="round" color="light" (click)="click('+/-')">%</ion-button>
+        <ion-button shape="round" color="light" (click)="click('c')" >C</ion-button>
       </ion-col>
       <ion-col>
         <!-- <ion-button shape="round" color="light" (click)="click('%')" > <ion-icon name="home"></ion-icon> </ion-button> -->
@@ -31,6 +42,7 @@
           <ion-icon class="backspace" name="backspace"></ion-icon>
         </ion-button>
       </ion-col>
+     
       <ion-col>
         <ion-button shape="round" color="light" (click)="click('/')">/</ion-button>
       </ion-col>

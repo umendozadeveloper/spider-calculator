@@ -11,3 +11,5 @@ npx cap add android
 npx cap sync android
 
 npx cap open android
+
+npx capacitor-assets generate
