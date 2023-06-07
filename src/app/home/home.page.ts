@@ -38,7 +38,8 @@ export class HomePage {
     AdMob.initialize({
       requestTrackingAuthorization: true,
       testingDevices: this.testing ? ['One Plus'] : [],
-      initializeForTesting: this.testing
+      initializeForTesting: this.testing,
+      tagForChildDirectedTreatment: true
     });
 
     await this.showBanner();
