@@ -19,7 +19,7 @@ export class HomePage {
   ringtones =  ['puercoarana', 'spider1', 'spider2'];
   ringtoneEnabled = true;
   testing:boolean = environment.production && environment.production == 'false' ? true : false;
-
+  
   constructor() {
     console.log("Env ", environment)
     console.log("Testing", this.testing);
@@ -37,7 +37,7 @@ export class HomePage {
 
     AdMob.initialize({
       requestTrackingAuthorization: true,
-      testingDevices: ['One Plus'],
+      testingDevices: this.testing ? ['One Plus'] : [],
       initializeForTesting: this.testing
     });
 
