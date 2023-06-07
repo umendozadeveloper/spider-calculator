@@ -19,6 +19,7 @@ export class HomePage {
   ringtones =  ['puercoarana', 'spider1', 'spider2'];
   ringtoneEnabled = true;
   testing:boolean = environment.production && environment.production == 'false' ? true : false;
+  // testing:boolean = true;
   
   constructor() {
     console.log("Env ", environment)
@@ -46,7 +47,7 @@ export class HomePage {
 
   async showBanner() {
     // const adId = isPlatform('ios') ? 'ios-ad-id' : 'android-ad-unit';
-    const adId = 'android-ad-unit';
+    const adId = 'ca-app-pub-9368904111185613/7487591591'; 
     const option: BannerAdOptions = {
       adId,
       adSize: BannerAdSize.ADAPTIVE_BANNER,
@@ -147,6 +148,7 @@ export class HomePage {
       }
       if(this.display[this.display.length-1] !== '+' && this.display[this.display.length-1] !== '-' &&
       this.display[this.display.length-1] !== '/' && this.display[this.display.length-1] !== '*'){
+       
           this.makeCalculation(newOperator, parseFloat(data[counter]));
       }
       
@@ -156,7 +158,7 @@ export class HomePage {
   }
 
   makeCalculation(operator:string, value:number){
-    
+  
 
     if(operator!==""){
       switch(operator){
@@ -188,40 +190,18 @@ export class HomePage {
       
     }
     console.log("Current value ", this.currentValue);
-    this.result = this.currentValue.toString();
+   
+    this.result =  this.currentValue.toString();
+    if(this.result.includes(".")){
+      this.result = (Math.round(this.currentValue * 100) / 100).toFixed(2).toString();
+    }
+    
+    if(this.result==="NaN"){
+      this.result = "";
+    }
   }
 
-  verifyOperation(result:string, newVal:string){
-    
-    const numbers = result.split(new RegExp(this.separators.join('|'), 'g'));
-    let operator = "";
-    console.log("NUMBERS ", numbers);
-    console.log("NEW VAL ", newVal);
-    
-    
-    let operationResult:number = 0;
-    switch(true){
-      case result.includes('+'):
-        operator = "+";
-        operationResult = parseFloat(numbers[0]) + parseFloat(newVal);
-        break;
-      case result.includes('-'):
-        operator = "-";
-        operationResult = parseFloat(numbers[0]) - parseFloat(newVal);
-        break;
-      case result.includes('*'):
-        operator = "*";
-        operationResult = parseFloat(numbers[0]) * parseFloat(newVal);
-        break;
-      case result.includes('/'):
-        operator = "/";
-        operationResult = parseFloat(numbers[0]) / parseFloat(newVal);
-        break;
-    }
-    this.result += " " + newVal   + " = ";
-    this.display = operationResult.toString();
-    console.log("RESS ", operationResult);
-  }
+  
   
 
   
