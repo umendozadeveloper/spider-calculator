@@ -13,7 +13,9 @@
   
 
   <div class="calc-display">
-    <ion-input type="text" readOnly="true" [(ngModel)]="display" class="ion-text-end"></ion-input>
+    <ion-input type="text" readOnly="true" [(ngModel)]="display" class="ion-text-end"
+    [ngClass]="{'min-text': display.length > 10 , 'min-text-2' : display.length >= 20, 'min-text-3' : display.length >= 30  }"
+    ></ion-input>
     <!-- <ion-label class="ion-text-end">{{display}}</ion-label> -->
     <div class="ion-text-end calc-mini-display">
       {{result}}
